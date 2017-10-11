@@ -6,6 +6,7 @@ public class InputHandler implements KeyListener {
 	private static boolean down = false;
 	private static boolean right = false;
 	private static boolean left = false;
+	private static boolean space = false;
 	
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
@@ -13,6 +14,7 @@ public class InputHandler implements KeyListener {
 		if(key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) 	{down = true;}
 		if(key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT)	{right = true;}
 		if(key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) 	{left = true;}
+		if(key == KeyEvent.VK_SPACE) 	{space = true;}
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -21,6 +23,7 @@ public class InputHandler implements KeyListener {
 		if(key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) 	{down = false;}
 		if(key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT)	{right = false;}
 		if(key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) 	{left = false;}
+		if(key == KeyEvent.VK_SPACE) 	{space = false;}
 	}
 
 	public void keyTyped(KeyEvent e) {
@@ -41,5 +44,9 @@ public class InputHandler implements KeyListener {
 
 	public boolean getLeft() {
 		return left;
+	}
+
+	public boolean getSpace() {
+		return space;
 	}
 }

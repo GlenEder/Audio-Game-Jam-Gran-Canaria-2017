@@ -42,6 +42,18 @@ public class MapHandler {
 		return null;
 	}
 
+	public int[] getEndPos() {
+		for(int i = 0; i < map.length; i++) {
+			for(int j = 0; j < map[i].length; j++) {
+				if(map[i][j] == 3) {
+					return new int[] {j, i};
+				}
+			}
+		}
+
+		return null;
+	}
+
 	public void printMap() {
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map[i].length; j++) {

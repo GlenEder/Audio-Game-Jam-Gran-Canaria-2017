@@ -1,3 +1,5 @@
+import java.io.*;
+import javax.sound.sampled.*;
 
 public class GameHandler implements Runnable{
 	
@@ -10,6 +12,8 @@ public class GameHandler implements Runnable{
 
 	private int x;
 	private int y;
+	private int endX;
+	private int endY;
 	private int[][] currMap;
 
 	public void run() {
@@ -23,7 +27,7 @@ public class GameHandler implements Runnable{
 			if(input.getUp()) {
 				if(y - 1 >= 0 && currMap[y - 1][x] != 1) {
 					y--;
-					//play sound
+					playSound("Sounds/Beacon.wav");
 					System.out.println("x, y: " + x +", " + y); 
 					coolDown();
 				}
@@ -31,6 +35,7 @@ public class GameHandler implements Runnable{
 				if(y + 1 < currMap.length && currMap[y + 1][x] != 1) {
 					y++;
 					//play sound
+					playSound("Sounds/Beacon.wav");
 					System.out.println("x, y: " + x +", " + y);
 					coolDown();
 				}
@@ -38,6 +43,7 @@ public class GameHandler implements Runnable{
 				if(x + 1 < currMap[y].length && currMap[y][x + 1] != 1) {
 					x++;
 					//play sound
+					playSound("Sounds/Beacon.wav");
 					System.out.println("x, y: " + x +", " + y);
 					coolDown();
 				}
@@ -45,9 +51,13 @@ public class GameHandler implements Runnable{
 				if(x - 1 >= 0 && currMap[y][x - 1] != 1) {
 					x--;
 					//play sound
+					playSound("Sounds/Beacon.wav");
 					System.out.println("x, y: " + x +", " + y);
 					coolDown();
 				}
+			}else if (input.getSpace()) {
+				playSound("Sounds/Beacon.wav");
+				coolDown();
 			}
 
 			if(currMap[y][x] == 3) {
@@ -58,6 +68,26 @@ public class GameHandler implements Runnable{
 		}
 
 		stop();
+	}
+
+	public int getReduction() {
+		int xpart = (x - endX) * (x - endX);
+		int ypart = (y - endY) * (y - endY);
+		int distance = (int)(Math.sqrt(xpart + ypart));
+		return distance * -5;
+
+	}
+
+	public float getSoundBalance() {
+		int xdif = endX - x;
+		double ratio = (xdif * 2) / 10.0;
+		if(ratio > 1.0) {
+			ratio = 1.0;
+		}else if (ratio < -1.0) {
+			ratio = -1.0;
+		}
+		System.out.println(ratio);
+		return (float)ratio;
 	}
 
 	public void coolDown() {
@@ -77,6 +107,10 @@ public class GameHandler implements Runnable{
 		y = spawn[1];
 		System.out.println("x, y: " + x +", " + y);
 
+		int[] endPos = mapHandler.getEndPos();
+		endX = endPos[0];
+		endY = endPos[1];
+
 		//play sound "Level ..."
 		currLevel++;
 	}
@@ -88,6 +122,24 @@ public class GameHandler implements Runnable{
 		mapHandler = new MapHandler();
 		goToNextLevel();
 
+	}
+
+	public void playSound(String soundFile) {
+		try {
+			Clip clip = AudioSystem.getClip();
+			AudioInputStream ais = AudioSystem.getAudioInputStream(new File(soundFile));
+			clip.open(ais);
+			FloatControl gainContorl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+			gainContorl.setValue(getReduction());
+
+			FloatControl balanceControl = (FloatControl)clip.getControl(FloatControl.Type.BALANCE);
+			balanceControl.setValue(getSoundBalance());
+
+			clip.loop(0);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 
