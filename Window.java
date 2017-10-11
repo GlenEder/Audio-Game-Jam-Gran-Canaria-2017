@@ -10,6 +10,7 @@ public class Window extends JFrame{
 		setSize(width, height);
 		setLocationRelativeTo(null);
 		setResizable(false);
+		getContentPane().setBackground(java.awt.Color.black);
 
 		setVisible(true);
 	}
