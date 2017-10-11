@@ -10,10 +10,24 @@ public class GameHandler implements Runnable{
 		System.out.println("running main thread...");
 		init();
 
+		long now = System.nanoTime();
+		long lastTime = now;
+		long sleepTime;
+
 		while(running) {
-			System.out.println("running");
+
+			lastTime = now;
 			tick();
-			render();
+			now = System.nanoTime();
+
+			try {
+				sleepTime = (1000000000 / 60) - (now - lastTime);
+				if(sleepTime > 0) {
+					thread.sleep(sleepTime / 1000000);
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
 
 		}
 
@@ -33,9 +47,6 @@ public class GameHandler implements Runnable{
 		}
 	}
 
-	public void render() {
-
-	}
 
 	public synchronized void start() {
 		if(thread == null) {
