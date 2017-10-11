@@ -26,6 +26,22 @@ public class MapHandler {
 	
 	}	
 
+	public int[][] getMap() {
+		return map;
+	}
+
+	public int[] getSpawnPos() {
+		for(int i = 0; i < map.length; i++) {
+			for(int j = 0; j < map[i].length; j++) {
+				if(map[i][j] == 2) {
+					return new int[] {j, i};
+				}
+			}
+		}
+
+		return null;
+	}
+
 	public void printMap() {
 		for(int i = 0; i < map.length; i++) {
 			for(int j = 0; j < map[i].length; j++) {

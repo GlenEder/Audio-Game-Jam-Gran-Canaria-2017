@@ -11,7 +11,9 @@ public class Window extends JFrame{
 		setLocationRelativeTo(null);
 		setResizable(false);
 		getContentPane().setBackground(java.awt.Color.black);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		setVisible(true);
 	}
+
 }
