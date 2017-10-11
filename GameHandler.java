@@ -5,6 +5,7 @@ public class GameHandler implements Runnable{
 	private boolean running = false;
 	private Window window;
 	private InputHandler input;
+	private MapHandler mapHandler;
 
 	public void run() {
 		System.out.println("running main thread...");
@@ -38,6 +39,9 @@ public class GameHandler implements Runnable{
 		window = new Window();
 		input = new InputHandler();
 		window.addKeyListener(input);
+		mapHandler = new MapHandler();
+		mapHandler.loadLevel("TestLevel");
+		mapHandler.printMap();
 
 	}
 
