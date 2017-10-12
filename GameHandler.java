@@ -74,7 +74,11 @@ public class GameHandler implements Runnable{
 		int xpart = (x - endX) * (x - endX);
 		int ypart = (y - endY) * (y - endY);
 		int distance = (int)(Math.sqrt(xpart + ypart));
-		return distance * -5;
+		distance *= -5;
+		if(distance < -30) {
+			distance = -30;
+		}
+		return distance;
 
 	}
 
@@ -92,7 +96,7 @@ public class GameHandler implements Runnable{
 
 	public void coolDown() {
 		try {
-			thread.sleep(500);
+			thread.sleep(200);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
