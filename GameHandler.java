@@ -103,6 +103,12 @@ public class GameHandler implements Runnable{
 	}
 
 	public void goToNextLevel() {
+		if(currLevel > 8) {
+			System.out.println("Game Over");
+			//play game over sound
+			return;
+		}
+		//play new level sound
 		mapHandler.loadLevel("Level" + currLevel);
 		mapHandler.printMap();
 		currMap = mapHandler.getMap();
