@@ -27,7 +27,7 @@ public class GameHandler implements Runnable{
 			if(input.getUp()) {
 				if(y - 1 >= 0 && currMap[y - 1][x] != 1) {
 					y--;
-					playSound("Sounds/Beacon.wav");
+					playSound("Sounds/Beacon.wav", false);
 					System.out.println("x, y: " + x +", " + y); 
 					coolDown();
 				}
@@ -35,7 +35,7 @@ public class GameHandler implements Runnable{
 				if(y + 1 < currMap.length && currMap[y + 1][x] != 1) {
 					y++;
 					//play sound
-					playSound("Sounds/Beacon.wav");
+					playSound("Sounds/Beacon.wav", false);
 					System.out.println("x, y: " + x +", " + y);
 					coolDown();
 				}
@@ -43,7 +43,7 @@ public class GameHandler implements Runnable{
 				if(x + 1 < currMap[y].length && currMap[y][x + 1] != 1) {
 					x++;
 					//play sound
-					playSound("Sounds/Beacon.wav");
+					playSound("Sounds/Beacon.wav", false);
 					System.out.println("x, y: " + x +", " + y);
 					coolDown();
 				}
@@ -51,12 +51,12 @@ public class GameHandler implements Runnable{
 				if(x - 1 >= 0 && currMap[y][x - 1] != 1) {
 					x--;
 					//play sound
-					playSound("Sounds/Beacon.wav");
+					playSound("Sounds/Beacon.wav", false);
 					System.out.println("x, y: " + x +", " + y);
 					coolDown();
 				}
 			}else if (input.getSpace()) {
-				playSound("Sounds/Beacon.wav");
+				playSound("Sounds/Beacon.wav", false);
 				coolDown();
 			}
 
@@ -109,6 +109,7 @@ public class GameHandler implements Runnable{
 			return;
 		}
 		//play new level sound
+		playSound("Sounds/levelComplete.wav", true);
 		mapHandler.loadLevel("Level" + currLevel);
 		mapHandler.printMap();
 		currMap = mapHandler.getMap();
@@ -134,17 +135,19 @@ public class GameHandler implements Runnable{
 
 	}
 
-	public void playSound(String soundFile) {
+	public void playSound(String soundFile, boolean nextLevel) {
 		try {
 			Clip clip = AudioSystem.getClip();
 			AudioInputStream ais = AudioSystem.getAudioInputStream(new File(soundFile));
 			clip.open(ais);
-			FloatControl gainContorl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
-			gainContorl.setValue(getReduction());
+			if(!nextLevel) {
+				FloatControl gainContorl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+				gainContorl.setValue(getReduction());
 
-			FloatControl balanceControl = (FloatControl)clip.getControl(FloatControl.Type.BALANCE);
-			balanceControl.setValue(getSoundBalance());
-
+				FloatControl balanceControl = (FloatControl)clip.getControl(FloatControl.Type.BALANCE);
+				balanceControl.setValue(getSoundBalance());
+			}
+			
 			clip.loop(0);
 		}catch (Exception e) {
 			e.printStackTrace();
